@@ -1,8 +1,10 @@
-name: Deploy to AWS
+name: Sync S3 Files
 
 on:
   push:
     branches: [ master, main ]
+    paths:
+      - 's3/**'
 
 jobs:
   deploy:

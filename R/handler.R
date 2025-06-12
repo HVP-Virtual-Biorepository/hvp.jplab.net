@@ -1,3 +1,3 @@
 handler <- function(context) {
-  list(msg = "hello", context = context)
+  list(msg = "hi", context = context)
 }

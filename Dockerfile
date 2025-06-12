@@ -4,8 +4,7 @@ RUN Rscript -e "\
   options(warn = 2); \
   install.packages('pak'); \
   options(repos = c(CRAN = 'https://p3m.dev/cran/__linux__/jammy/2025-06-12')); \
-  pak::pak(c('lambdr'))"
-#'RMariaDB', 'readxl', 
+  pak::pak(c('RMariaDB', 'readxl', 'lambdr'))"
 
 # Lambda setup
 RUN mkdir /R

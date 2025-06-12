@@ -7,13 +7,14 @@ on:
     branches: [ master, main ]
     paths:
       - 'Dockerfile'
-      - 'R/**'
+      - 'R/runtime.R'
+      #- 'R/**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -27,3 +28,4 @@ jobs:
           aws ecr get-login-password | docker login --username AWS --password-stdin $REPO
           docker build -t $REPO/hvp_ecr:latest .
           docker push $REPO/hvp_ecr:latest
+          aws lambda update-function-code --function-name hvp_lambda --image-uri $REPO/hvp_ecr:latest

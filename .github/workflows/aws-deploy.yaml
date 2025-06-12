@@ -1,0 +1,15 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Sync S3 Files
+        run: |
+          aws s3 sync s3 s3://hvp.jplab.net --delete

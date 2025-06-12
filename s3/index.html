@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    
+    <title>Virtual Biorepository</title>
+
+    <style>
+      header .fa   { cursor: pointer }
+      nav li       { padding-top: 0; padding-bottom: 0; margin-bottom: 19px }
+      nav a        { text-underline-offset: 8px }
+      nav a.active { text-decoration: underline }
+      section      { margin-top: 20px; margin-bottom: 40px }
+
+      body.guest       #action_panel { display:    none   }
+      body.guest       nav           { visibility: hidden }
+      body.guest       #uac          { visibility: hidden }
+      body:not(.guest) #login_panel  { display:    none   }
+
+      section:not(.active) { display: none }
+    </style>
+
+  </head>
+  <body class="guest">
+
+    <main class="container">
+
+      <header class="grid">
+        
+        <div>
+          <small>Human Virome Project</small>
+          <h3>Virtual Biorepository</h3>
+        </div>
+
+        <div class="" style="display:flex; flex-direction:column; justify-content:space-between">
+          <div style="text-align:right">
+            <small>
+              <span id="uac">
+                Daniel Smith &nbsp; 
+                <i id="logout_btn" title="Log Out" class="fa fa-sign-out" aria-hidden="true"></i> &nbsp; 
+              </span>
+              <i id="theme_btn" title="Toggle Light/Dark Theme" class="fa fa-moon-o" aria-hidden="true"></i>
+            </small>
+          </div>
+          <nav>
+            <small>
+              <ul>
+                <li><a href="#" data-target="home_page"    class="secondary active" id="home_link">Home</a></li>
+                <li><a href="#" data-target="add_metadata" class="secondary"        id="md_link">Add Metadata</a></li>
+                <li><a href="#" data-target="sra_template" class="secondary"        id="sra_link">SRA Template</a></li>
+              </ul>
+            </small>
+          </nav>
+        </div>
+
+      </header>
+      
+      <hr style="border-top-width:6px; margin:0"><br>
+
+      <section id="home_page" class="active">
+
+        <div class="grid">
+          <div>
+            <p>
+              Metadata for the Human Virome Project should be uploaded here.
+              Information on projects, cohorts, subjects, samples, libraries, files, 
+              and analyses can then be exported in a format compatible with NCBI's 
+              SRA submission process.
+            </p>
+            <p>
+              For assistance with registering an account, uploading data, or to 
+              request changes to the workflow, please create an issue on this site's 
+              <a class="secondary" href="https://github.com/cmmr/hvp.jplab.net">GitHub project page</a>.
+            </p>
+          </div>
+
+          <div id="login_panel">
+            <input name="login" placeholder="Login" aria-label="Login" autocomplete="username"/>
+            <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password"/>
+            <input type="button" id="login_btn" value="Log in"/>
+            <hr>
+            <div class="grid">
+              <div style="text-align:center">
+                <small><a href="#" class="secondary">Register Account</a></small>
+              </div>
+              <div style="text-align:center">
+                <small><a href="#" class="secondary">Forgot Password</a></small>
+              </div>
+            </div>
+          </div>
+
+          <div id="action_panel">
+            <p>
+              <button data-target="md_link" style="width:100%">
+                Upload Sample Metadata &nbsp; 
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+              </button>
+            </p>
+            <p>
+              <button data-target="sra_link" style="width:100%">
+                SRA Submission Template &nbsp; 
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+              </button>
+            </p>
+          </div>
+
+        </div>
+
+
+      </section> <!-- /#home_page -->
+      
+
+
+      <section id="add_metadata">
+
+        <h4>1. Download Metadata Template</h4>
+        <div class="grid">
+          <div>
+            <p>
+              The metadata template is an Excel file with separate worksheets for
+              projects, cohorts, subjects, samples, libraries, files, and analyses.
+            </p>
+          </div>
+          <div style="margin:0 auto">
+            <button>
+              <i class="fa fa-download"></i> &nbsp; Download Template
+            </button>
+          </div>
+        </div>
+        
+        <br><hr><br>
+        
+        <div class="grid">
+          <div>
+            <h4>2. Fill In Your Metadata</h4>
+            <p>
+              Any given row may be left blank. When filling in a row, all red 
+              fields are required, green fields are optional, and yellow fields are 
+              special cases. 
+            </p><p>
+              Selecting a header cell will display details on whether it needs to 
+              be filled in, and what type of data is expected.
+            </p>
+          </div>
+            <img style="margin:0 auto" src="workbook.png"/>
+        </div>
+        
+        <br><hr><br>
+        
+        <h4>3. Upload Completed File</h4>
+        <div class="grid">
+          <div>
+            <p>
+              To run validation checks on your completed metadata file, select it here.
+            </p>
+            <p>
+              If your data passes all validation checks, you can then click 
+              <b>Save to HVP</b> to import it into the Human Virome Project's 
+              Virtual Biorepository database.
+            </p>
+            <p>
+              If problems are found, they will be detailed below.
+            </p>
+          </div>
+          <div style="margin:0 auto; text-align:center">
+            <input type="file">
+            <br>
+            <div id="file_empty" style="display:none">&nbsp</div>
+            <div id="validating" style="display:none"><span aria-busy="true" aria-invalid="false">validating...</span></div>
+            <div id="file_valid"><i class="fa fa-check" aria-hidden="true"></i> Passed Validation Checks</div>
+            <div id="file_invalid" style="display:none"><i class="fa fa-times-circle" aria-hidden="true"></i> See issues below.</div>
+            <br>
+            <button style="width:100%" disabled>
+              <i class="fa fa-cloud-upload"></i> &nbsp; Save to HVP
+            </button>
+          </div>
+        </div>
+
+      </section> <!-- /#add_metadata -->
+      
+
+
+      <section id="sra_template">
+      </section> <!-- /#sra_template -->
+      
+
+      <hr style="border-top-width:6px; margin:10px auto">
+
+      <footer style="text-align:center">
+      <small>
+        <a class="secondary" href="https://www.bcm.edu/research/research-centers/alkek-center-for-metagenomics-and-microbiome-research">Alkek Center for Metagenomics and Microbiome Research</a>
+        &bull; 
+        <a class="secondary" href="https://www.bcm.edu">Baylor College of Medicine</a>
+      </small>
+      </footer>
+
+    </main>
+
+
+    <script>
+      $( document ).ready(function() {
+
+        const $html = $('html');
+        $html.attr('data-theme', window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light');
+        
+        /* Log In */
+        $('#login_btn').on('click', function(e) {
+          $('body').removeClass('guest');
+        });
+
+
+        /* Change Page */
+        $('nav').on('click', 'a', function (e) {
+          
+          $('nav a').removeClass('active');
+          $(this).addClass('active');
+          
+          const $target = $('#' + $(this).data('target'));
+          
+          $target.siblings().removeClass('active');
+          $target.addClass('active');
+        });
+
+        $('#action_panel').on('click', 'button', function (e) {
+          const $target = $('#' + $(this).data('target'));
+          $target.trigger('click');
+        });
+        
+        
+        /* Log Out */
+        $('#logout_btn').on('click', function(e) {
+          $('body').addClass('guest');
+          $('#home_link').trigger('click');
+        });
+        
+        
+        /* Switch Dark/Light Theme */
+        $('#theme_btn').on('click', function(e) {
+          if ($html.attr('data-theme') === 'dark') {
+            $html.attr('data-theme', 'light');
+          } else {
+            $html.attr('data-theme', 'dark');
+          }
+        });
+
+      });
+    </script>
+  </body>
+</html>

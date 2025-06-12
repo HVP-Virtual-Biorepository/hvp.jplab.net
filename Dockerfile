@@ -12,5 +12,5 @@ RUN mkdir /R
 COPY R/ /R
 RUN chmod 755 -R /R
 
-ENTRYPOINT Rscript R/runtime.R
+ENTRYPOINT ["Rscript", "R/runtime.R"]
 CMD ["handler"]

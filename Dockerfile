@@ -4,7 +4,7 @@ RUN Rscript -e "\
   options(warn = 2); \
   install.packages('pak'); \
   options(repos = c(CRAN = 'https://p3m.dev/cran/__linux__/jammy/2025-06-12')); \
-  pak::pak(c('RMariaDB', 'readxl', 'lambdr'))"
+  pak::pak(c('bcrypt', 'blastula', 'DBI', 'jsonlite', 'lambdr', 'openssl', 'readxl', 'RMariaDB'))"
 
 # Lambda setup
 RUN mkdir /R

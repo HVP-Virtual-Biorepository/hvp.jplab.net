@@ -6,7 +6,9 @@
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>
     
     <title>Virtual Biorepository</title>
 
@@ -41,7 +43,7 @@
           <div style="text-align:right">
             <small>
               <span id="uac">
-                Daniel Smith &nbsp; 
+                <span id="username">Daniel Smith</span> &nbsp; 
                 <i id="logout_btn" title="Log Out" class="fa fa-sign-out" aria-hidden="true"></i> &nbsp; 
               </span>
               <i id="theme_btn" title="Toggle Light/Dark Theme" class="fa fa-moon-o" aria-hidden="true"></i>
@@ -80,9 +82,9 @@
           </div>
 
           <div id="login_panel">
-            <input name="login" placeholder="Login" aria-label="Login" autocomplete="username"/>
-            <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password"/>
-            <input type="button" id="login_btn" value="Log in"/>
+            <input id="login_email" type="email" placeholder="Email Address" aria-label="Email Address" autocomplete="username"/>
+            <input id="login_password" type="password" placeholder="Password" aria-label="Password" autocomplete="current-password"/>
+            <input id="login_btn" type="button" value="Log in"/>
             <hr>
             <div class="grid">
               <div style="text-align:center">
@@ -203,14 +205,40 @@
 
 
     <script>
+      
+
       $( document ).ready(function() {
 
         const $html = $('html');
         $html.attr('data-theme', window?.matchMedia?.('(prefers-color-scheme:dark)')?.matches ? 'dark' : 'light');
         
+        if (localStorage.getItem('auth_token')) {
+          const auth_token = localStorage.getItem('auth_token');
+
+          api({
+            payload: { 
+              action:     "token_login",
+              auth_token: localStorage.getItem('auth_token')
+            }
+          });
+
+        }
+
         /* Log In */
         $('#login_btn').on('click', function(e) {
-          $('body').removeClass('guest');
+
+          $.ajax({
+            method: "POST",
+            url:    hvp_lambda,
+            data: {
+              action   : "log_in",
+              email    : $('#login_email').val(),
+              password : $('#login_password').val() },
+            callback: function (resp) {
+              if (resp['success']) $('body').removeClass('guest');
+            }
+          });
+          
         });
 
 

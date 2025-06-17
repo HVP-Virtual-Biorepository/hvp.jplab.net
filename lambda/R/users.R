@@ -111,7 +111,7 @@ api_my_acct <- function (auth_token, full_name, affiliation) {
 }
 
 
-api_reset_password <- function (email) {
+api_forgot_pw <- function (email) {
 
   assert_string(email, 3, 100)
 
@@ -150,12 +150,13 @@ api_reset_password <- function (email) {
 
 api_token_login <- function (auth_token) {
 
-  db <- db_connect()
-  on.exit(db_close(db))
-
   tryCatch(
-    error = function (e) { list(auth_token = '') }
+    error = function (e) { list(auth_token = '', error = as.character(e)) }
     expr  = {
+
+      db <- db_connect()
+      on.exit(db_close(db))
+      
       user <- authenticate(db, auth_token)
       list(
         full_name   = user['full_name'],

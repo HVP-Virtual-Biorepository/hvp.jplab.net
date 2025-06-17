@@ -126,6 +126,11 @@ ALTER TABLE users ADD CONSTRAINT users_fk1 FOREIGN KEY (added_by) REFERENCES use
 |  SMTP_USERNAME     | [redacted]                                               |
 
 
+## Lambda CORS
+
+* Allow origin = `*`
+* Allow headers = `*`
+* Allow methods = `*`
 
 
 

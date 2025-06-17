@@ -1,14 +1,11 @@
-# https://docs.github.com/en/actions/use-cases-and-examples/deploying/deploying-to-amazon-elastic-container-service
-
-name: Build Docker Image
+name: Deploy to AWS Lambda
 
 on:
   push:
-    branches: [ master, main ]
+    branches: main
     paths:
-      - 'Dockerfile'
-      - 'R/runtime.R'
-      #- 'R/**'
+      - 'lambda/**'
+      - '.github/workflows/deploy-lambda.yaml'
 
 jobs:
   deploy:
@@ -26,6 +23,6 @@ jobs:
           REPO: 434617284684.dkr.ecr.us-east-1.amazonaws.com
         run: |
           aws ecr get-login-password | docker login --username AWS --password-stdin $REPO
-          docker build -t $REPO/hvp_ecr:latest .
+          docker build -t $REPO/hvp_ecr:latest lambda
           docker push $REPO/hvp_ecr:latest
           aws lambda update-function-code --function-name hvp_lambda --image-uri $REPO/hvp_ecr:latest

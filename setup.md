@@ -1,8 +1,8 @@
 
-## MySQL
+## Purpose
 
-AWS Aurora RDS provides a serverless MySQL option. 
-Technically, it's a managed cluster that scales to 0.
+This file contains technical notes for re-creating the
+AWS resources needed by this website.
 
 
 ### RDS Database Cluster
@@ -106,4 +106,28 @@ ALTER TABLE users ADD CONSTRAINT users_fk1 FOREIGN KEY (added_by) REFERENCES use
 
 ```
 
+
+
+## Lambda environment variables
+
+|--------------------|----------------------------------------------------------|
+|  MYSQL_DATABASE    | hvp                                                      |
+|  MYSQL_HOST        | hvp-mysql.cluster-[redacted].us-east-1.rds.amazonaws.com |
+|  MYSQL_PASSWORD    | [redacted]                                               |
+|  MYSQL_PORT        | 3306                                                     |
+|  MYSQL_USERNAME    | lambda_rw                                                |
+|  SMTP_FROMADDR     | Virtual Biorepository &lt;hvp-no-reply@jplab.net&gt;     |
+|  SMTP_MAX_RATE     | 25                                                       |
+|  SMTP_PASSWORD     | [redacted]                                               |
+|  SMTP_PORT         | 465                                                      |
+|  SMTP_SERVER       | email-smtp.us-east-1.amazonaws.com                       |
+|  SMTP_SSL          | true                                                     |
+|  SMTP_USERNAME     | [redacted]                                               |
+
+
+
+
+
+
+	
 

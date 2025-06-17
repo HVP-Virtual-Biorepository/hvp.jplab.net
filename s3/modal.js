@@ -1,0 +1,106 @@
+/*
+ * Modal
+ *
+ * Pico.css - https://picocss.com
+ * Copyright 2019-2024 - Licensed under MIT
+ *
+ * https://codesandbox.io/embed/4mrnhq
+ */
+
+// Config
+const isOpenClass = "modal-is-open";
+const openingClass = "modal-is-opening";
+const closingClass = "modal-is-closing";
+const scrollbarWidthCssVar = "--pico-scrollbar-width";
+const animationDuration = 400; // ms
+let visibleModal = null;
+
+// Toggle modal
+const toggleModal = (event) => {
+  event.preventDefault();
+  const modal = document.getElementById(event.currentTarget.dataset.target);
+  if (!modal) return;
+  modal && (modal.open ? closeModal(modal) : openModal(modal));
+};
+
+// Open modal
+const openModal = (modal) => {
+  const { documentElement: html } = document;
+  const scrollbarWidth = getScrollbarWidth();
+  if (scrollbarWidth) {
+    html.style.setProperty(scrollbarWidthCssVar, `${scrollbarWidth}px`);
+  }
+  html.classList.add(isOpenClass, openingClass);
+  setTimeout(() => {
+    visibleModal = modal;
+    html.classList.remove(openingClass);
+  }, animationDuration);
+  modal.showModal();
+};
+
+// Close modal
+const closeModal = (modal) => {
+  visibleModal = null;
+  const { documentElement: html } = document;
+  html.classList.add(closingClass);
+  setTimeout(() => {
+    html.classList.remove(closingClass, isOpenClass);
+    html.style.removeProperty(scrollbarWidthCssVar);
+    modal.close();
+  }, animationDuration);
+};
+
+// Close with a click outside
+document.addEventListener("click", (event) => {
+  if (visibleModal === null) return;
+  const modalContent = visibleModal.querySelector("article");
+  const isClickInside = modalContent.contains(event.target);
+  !isClickInside && closeModal(visibleModal);
+});
+
+// Close with Esc key
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && visibleModal) {
+    closeModal(visibleModal);
+  }
+});
+
+// Get scrollbar width
+const getScrollbarWidth = () => {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  return scrollbarWidth;
+};
+
+// Is scrollbar visible
+const isScrollbarVisible = () => {
+  return document.body.scrollHeight > screen.height;
+};
+
+
+
+$( document ).ready(function() {
+  $('.close_modal').on('click', function (e) {
+    closeModal($(this).closest('dialog')[0]);
+    $('#message_title_text').text('');
+    $('#message_text').text('');
+  });
+});
+
+
+const display_message = (title, msg) => {
+  
+  let color = '';
+  
+  if (title == 'success') {
+    title = '<i class="fa fa-check" aria-hidden="true"></i> Success';
+    color = 'var(--pico-ins-color)';
+  }
+  else if (title == 'error') {
+    title = '<i class="fa fa-times" aria-hidden="true"></i> Error';
+    color = 'var(--pico-del-color)';
+  }
+  
+  $('#message_title_text').css('color', color).text(title);
+  $('#message_text').text(msg);
+  openModal($('#message_modal')[0]);
+};

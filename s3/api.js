@@ -6,13 +6,12 @@ const hvp_lambda = "https://t33blvbzazbgf7vflqyp3tjhxy0hwddm.lambda-url.us-east-
 // Automatically handle common responses.
 //___________________________________________________________________
 $( document ).ajaxSuccess(function(event, jqXHR, params, resp) {
-  if (resp['auth_token']) localStorage.setItem('auth_token', resp['auth_token']);
-  if (resp['username'])   $('#username').text(resp['username']);
-  if (resp['error'])      Swal.fire({ icon: "error", text: resp['error'] });
+  if (resp['message']) display_message('success', resp['message']);
+  if (resp['error'])   display_message('error',   resp['error']);
 });
 
 $( document ).ajaxError(function(event, jqXHR, params, thrownError) {
-  Swal.fire({ icon: "warning", title: "AJAX Error", text: jqXHR.responseText });
+  display_message('error', jqXHR.responseText);
 });
 
 
@@ -20,6 +19,14 @@ $( document ).ajaxError(function(event, jqXHR, params, thrownError) {
 // AJAX wrapper for communicating with backend
 //___________________________________________________________________
 function api (args) {
+  
+  
+  //-------------------------------------------------------
+  // Add a spinner to a button until xhr returns.
+  //-------------------------------------------------------
+  if (args['busy']) {
+    args['busy'].attr('aria-busy', 'true');
+  }
   
   
   //-------------------------------------------------------
@@ -58,6 +65,11 @@ function api (args) {
   //-------------------------------------------------------
   xhr = $.ajax(params);
   
+  
+  //-------------------------------------------------------
+  // What to do after the xhr completes.
+  //-------------------------------------------------------
+  if (args['busy'])     { xhr.always(() => args['busy'].attr('aria-busy', 'false')); }
   if (args['callback']) { xhr.done(args['callback']); }
   
   return xhr;

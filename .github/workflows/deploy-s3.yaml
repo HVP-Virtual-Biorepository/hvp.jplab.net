@@ -1,10 +1,11 @@
-name: Sync S3 Files
+name: Deploy to AWS S3
 
 on:
   push:
-    branches: [ master, main ]
+    branches: main
     paths:
       - 's3/**'
+      - '.github/workflows/deploy-s3.yaml'
 
 jobs:
   deploy:

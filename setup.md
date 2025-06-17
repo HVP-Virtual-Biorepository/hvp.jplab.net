@@ -110,7 +110,8 @@ ALTER TABLE users ADD CONSTRAINT users_fk1 FOREIGN KEY (added_by) REFERENCES use
 
 ## Lambda environment variables
 
-|--------------------|----------------------------------------------------------|
+| Key                | Example Value                                            |
+| ------------------ | -------------------------------------------------------- |
 |  MYSQL_DATABASE    | hvp                                                      |
 |  MYSQL_HOST        | hvp-mysql.cluster-[redacted].us-east-1.rds.amazonaws.com |
 |  MYSQL_PASSWORD    | [redacted]                                               |

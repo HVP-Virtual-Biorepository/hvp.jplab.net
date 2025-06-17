@@ -33,8 +33,9 @@ function api (args) {
   // General/default xhr request parameters.
   //-------------------------------------------------------
   const params = {
-    url  : hvp_lambda,
-    type : "POST"
+    url         : hvp_lambda,
+    type        : "POST",
+    crossDomain : true
   };
   
   

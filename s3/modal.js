@@ -92,15 +92,21 @@ const display_message = (title, msg) => {
   let color = '';
   
   if (title == 'success') {
-    title = '<i class="fa fa-check" aria-hidden="true"></i> Success';
-    color = 'var(--pico-ins-color)';
+    $('#message_title_text')
+      .css('color', 'var(--pico-ins-color)')
+      .html('<i class="fa fa-check" aria-hidden="true"></i> Success');
   }
   else if (title == 'error') {
-    title = '<i class="fa fa-times" aria-hidden="true"></i> Error';
-    color = 'var(--pico-del-color)';
+    $('#message_title_text')
+      .css('color', 'var(--pico-del-color)')
+      .html('<i class="fa fa-times" aria-hidden="true"></i> Error');
+  }
+  else {
+    $('#message_title_text')
+      .css('color', '')
+      .text(title);
   }
   
-  $('#message_title_text').css('color', color).text(title);
   $('#message_text').text(msg);
   openModal($('#message_modal')[0]);
 };

@@ -107,7 +107,7 @@ api_my_acct <- function (auth_token, full_name, affiliation) {
   return (list(
     full_name   = full_name,
     affiliation = affiliation,
-    email       = user['email'] ))
+    email       = user[['email']] ))
 }
 
 
@@ -158,9 +158,9 @@ api_token_login <- function (auth_token) {
     expr  = {
       user <- authenticate(db, auth_token)
       list(
-        full_name   = user['full_name'],
-        affiliation = user['affiliation'],
-        email       = user['email'] ) })
+        full_name   = user[['full_name']],
+        affiliation = user[['affiliation']],
+        email       = user[['email']] ) })
 }
 
 
@@ -215,9 +215,9 @@ api_log_in <- function (email, password) {
 
   return (list(
     auth_token  = auth_token,
-    full_name   = user['full_name'],
-    affiliation = user['affiliation'], 
-    email       = user['email'] ))
+    full_name   = user[['full_name']],
+    affiliation = user[['affiliation']], 
+    email       = user[['email']] ))
 }
 
 

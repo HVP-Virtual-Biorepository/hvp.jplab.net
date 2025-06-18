@@ -1,7 +1,7 @@
 db_connect <- function (DATA_DIR) {
   
   db <- tryCatch(
-    error = function (e) stop("Unable to connect to MySQL.", e),
+    error = function (e) stop("Unable to connect to MySQL.\n", e$message),
     expr  = {
       DBI::dbConnect(
         drv      = RMariaDB::MariaDB(), 
@@ -20,7 +20,7 @@ db_connect <- function (DATA_DIR) {
 db_close <- function (db) {
   assert_dbi(db)
   tryCatch(
-    error = function (e) stop("Unable to disconnect from MySQL.", e),
+    error = function (e) stop("Unable to disconnect from MySQL.\n", e$message),
     expr  = DBI::dbDisconnect(db) )
 }
 
@@ -46,8 +46,7 @@ db_query <- function (db, sql, err_code, params = NULL, simplify = TRUE, req1 = 
     
     error = function (e)
       stop(
-        call. = FALSE,
-        "In db_query (", err_code,"): \n", e, "\n", sql, "\n\n", 
+        "In db_query (", err_code,"): \n", e$message, "\n", sql, "\n\n", 
         "Params = ", jsonlite::toJSON(params, auto_unbox = TRUE) ), 
     
     expr = local({
@@ -73,7 +72,7 @@ db_query <- function (db, sql, err_code, params = NULL, simplify = TRUE, req1 = 
       #________________________________________________________
       if (verb == "INSERT")
         result <- tryCatch(
-          error = function (e) stop("LAST_INSERT_ID(): ", e, call. = FALSE),
+          error = function (e) stop("LAST_INSERT_ID():\n", e$message),
           expr  = DBI::dbGetQuery(db, "SELECT LAST_INSERT_ID()")[1,1]  )
       
       
@@ -89,8 +88,8 @@ db_query <- function (db, sql, err_code, params = NULL, simplify = TRUE, req1 = 
       # Enforce req1 - Need exactly one result row.
       #________________________________________________________
       if (isTRUE(req1)) {
-        if (nrow(result) == 0) stop("req1 - No matching rows found.", call. = FALSE)
-        if (nrow(result) >= 2) stop("req1 - Too many results found.", call. = FALSE)
+        if (nrow(result) == 0) stop("req1 - No matching rows found.")
+        if (nrow(result) >= 2) stop("req1 - Too many results found.")
       }
       
       

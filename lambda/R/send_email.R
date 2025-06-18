@@ -4,7 +4,7 @@
 #' 
 send_email <- function (to, subject, message) {
   tryCatch(
-    error = function (e) stop("Unable to send email.", e),
+    error = function (e) stop("Unable to send email.\n", e$message),
     expr  = {
       
       #________________________________________________________

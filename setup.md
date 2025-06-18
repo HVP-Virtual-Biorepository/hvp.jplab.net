@@ -57,6 +57,9 @@ FLUSH PRIVILEGES;
 
 ### Connect to MySQL Server
 
+In EC2 -> Security Groups -> mysql_secgrp -> Inbound Rules, 
+change "Source" to "Anywhere-IPv4" (0.0.0.0/0).
+
 Use a MySQL client to connect using:
 
 * Host = endpoint name
@@ -116,7 +119,7 @@ ALTER TABLE users ADD CONSTRAINT users_fk1 FOREIGN KEY (added_by) REFERENCES use
 |  MYSQL_HOST        | hvp-mysql.cluster-[redacted].us-east-1.rds.amazonaws.com |
 |  MYSQL_PASSWORD    | [redacted]                                               |
 |  MYSQL_PORT        | 3306                                                     |
-|  MYSQL_USERNAME    | lambda_rw                                                |
+|  MYSQL_USERNAME    | hvp_lambda                                                |
 |  SMTP_FROMADDR     | Virtual Biorepository &lt;hvp-no-reply@jplab.net&gt;     |
 |  SMTP_MAX_RATE     | 25                                                       |
 |  SMTP_PASSWORD     | [redacted]                                               |

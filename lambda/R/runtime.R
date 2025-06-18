@@ -9,7 +9,7 @@ lapply(files, source)
 handler <- function(action, ...) {
   
   tryCatch(
-    error = function (e) { list(error = as.character(e)) },
+    error = function (e) { list(error = e$message) },
     expr  = {
   
       # action should be the unprefixed function name
@@ -23,7 +23,7 @@ handler <- function(action, ...) {
       action_args     <- handler_args[action_params]
     
       if (length(missing_args <- setdiff(action_params, names(action_args))) > 0)
-        stop(action, ' is missing argument(s): ', paste(collapse = ', ', missing_args), call. = FALSE)
+        stop(action, ' is missing argument(s): ', paste(collapse = ', ', missing_args))
     
       # Call the api_* function.
       do.call(action_function, action_args)

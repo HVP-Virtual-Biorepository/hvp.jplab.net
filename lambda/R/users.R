@@ -44,15 +44,15 @@ api_add_users <- function (auth_token, emails) {
   results <- lapply(emails, function (email) {
     
     tryCatch(
-      error = function (e) { attr(e, 'condition')$message },
+      error = function (e) { e$message },
       expr  = {
         
         email    <- trimws(assert_string(email, 5, 100))
-        if (!grepl('.+@.+\\..+', email)) stop('not an email address', call. = FALSE)
+        if (!grepl('.+@.+\\..+', email)) stop('not an email address')
 
         sql <- 'SELECT * FROM users WHERE email = ?'
         res <- db_query(db, sql, 'CAcct1', list(trimws(tolower(email))))
-        if (!is.null(res)) stop('account already exists', call. = FALSE)
+        if (!is.null(res)) stop('account already exists')
 
         password <- random_string(20)
         sql      <- 'INSERT INTO users (email, password) VALUES (?, ?)'
@@ -237,11 +237,11 @@ api_log_out <- function (auth_token) {
 
 
 assert_string <- function (str, min_len, max_len) {
-  if (!is.character(str))   stop(substitute(str), ' must be a string', call. = FALSE)
-  if (length(str) != 1)     stop(substitute(str), ' must be a string', call. = FALSE)
-  if (is.na(str))           stop(substitute(str), ' must be a string', call. = FALSE)
-  if (nchar(str) < min_len) stop(substitute(str), ' must be at least ', min_len, ' characters long', call. = FALSE)
-  if (nchar(str) > max_len) stop(substitute(str), ' must be at most ',  max_len, ' characters long', call. = FALSE)
+  if (!is.character(str))   stop(substitute(str), ' must be a string')
+  if (length(str) != 1)     stop(substitute(str), ' must be a string')
+  if (is.na(str))           stop(substitute(str), ' must be a string')
+  if (nchar(str) < min_len) stop(substitute(str), ' must be at least ', min_len, ' characters long')
+  if (nchar(str) > max_len) stop(substitute(str), ' must be at most ',  max_len, ' characters long')
   invisible(str)
 }
 

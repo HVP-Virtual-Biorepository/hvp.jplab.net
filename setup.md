@@ -80,7 +80,7 @@ DROP TABLE auth_tokens;
 DROP TABLE users;
 
 CREATE TABLE users (
-  user_id        INTEGER PRIMARY KEY,
+  user_id        INTEGER AUTO_INCREMENT PRIMARY KEY,
   full_name      VARCHAR(100) NOT NULL DEFAULT '',
   affiliation    VARCHAR(100) NOT NULL DEFAULT '',
   email          VARCHAR(100) NOT NULL,
@@ -94,7 +94,7 @@ CREATE UNIQUE INDEX users_idx1 ON users (email);
 
 
 CREATE TABLE auth_tokens (
-  auth_token_id    INTEGER PRIMARY KEY,
+  auth_token_id    INTEGER AUTO_INCREMENT PRIMARY KEY,
   user_id          INTEGER   NOT NULL,
   auth_token_sha   CHAR(128) NOT NULL,
   valid_until_utc  DATETIME  NOT NULL,

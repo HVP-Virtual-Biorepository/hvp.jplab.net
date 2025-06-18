@@ -158,6 +158,7 @@ api_token_login <- function (auth_token) {
     expr  = {
       user <- authenticate(db, auth_token)
       list(
+        auth_token  = auth_token,
         full_name   = user[['full_name']],
         affiliation = user[['affiliation']],
         email       = user[['email']] ) })

@@ -5,7 +5,7 @@ authenticate <- function (db, auth_token) {
   assert_dbi(db)
   assert_string(auth_token, 100, 100)
 
-  auth_token_sha <- openssl::sha512(auth_token)
+  auth_token_sha <- as.character(openssl::sha512(auth_token))
   
   sql <- 'DELETE FROM auth_tokens WHERE valid_until_utc < UTC_TIMESTAMP'
   db_query(db, sql, 'Auth1')
@@ -204,7 +204,7 @@ api_log_in <- function (email, password) {
 
   # create a new auth_token
   auth_token     <- random_string(100)
-  auth_token_sha <- openssl::sha512(auth_token)
+  auth_token_sha <- as.character(openssl::sha512(auth_token))
   sql <- 'INSERT INTO auth_tokens (user_id, auth_token_sha, valid_until_utc)'
   sql <- paste(sql, 'VALUES (?, ?, DATE_ADD(UTC_TIMESTAMP, INTERVAL 30 DAY))')
   db_query(db, sql, 'LIn5', list(user$user_id, auth_token_sha))
@@ -227,9 +227,11 @@ api_log_out <- function (auth_token) {
 
   db <- db_connect()
   on.exit(db_close(db))
-
+  
+  auth_token_sha <- as.character(openssl::sha512(auth_token))
+  
   sql <- 'DELETE FROM auth_tokens WHERE auth_token_sha = ?'
-  db_query(db, sql, 'LOut1', list(openssl::sha512(auth_token)))
+  db_query(db, sql, 'LOut1', list(auth_token_sha))
   
   return (list(auth_token = ''))
 }

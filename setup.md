@@ -119,8 +119,8 @@ ALTER TABLE users ADD CONSTRAINT users_fk1 FOREIGN KEY (added_by) REFERENCES use
 |  MYSQL_HOST        | hvp-mysql.cluster-[redacted].us-east-1.rds.amazonaws.com |
 |  MYSQL_PASSWORD    | [redacted]                                               |
 |  MYSQL_PORT        | 3306                                                     |
-|  MYSQL_USERNAME    | hvp_lambda                                                |
-|  SMTP_FROMADDR     | Virtual Biorepository &lt;hvp-no-reply@jplab.net&gt;     |
+|  MYSQL_USERNAME    | hvp_lambda                                               |
+|  SMTP_FROMADDR     | hvp-no-reply@jplab.net                                   |
 |  SMTP_MAX_RATE     | 25                                                       |
 |  SMTP_PASSWORD     | [redacted]                                               |
 |  SMTP_PORT         | 465                                                      |

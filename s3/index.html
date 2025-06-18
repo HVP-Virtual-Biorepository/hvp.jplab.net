@@ -12,7 +12,7 @@
 
     <style>
       header .fa   { cursor: pointer }
-      nav li       { padding-top: 0; padding-bottom: 0; margin-bottom: 19px }
+      nav li       { padding-top: 0; padding-bottom: 0; margin-bottom: 12px }
       nav a        { text-underline-offset: 8px }
       nav a.active { text-decoration: underline }
       section      { margin-top: 20px; margin-bottom: 40px }
@@ -130,7 +130,7 @@
             </p>
           </div>
           <div style="margin:0 auto">
-            <button>
+            <button disabled>
               <i class="fa fa-download"></i> &nbsp; Download Template
             </button>
           </div>
@@ -171,11 +171,11 @@
             </p>
           </div>
           <div style="margin:0 auto; text-align:center">
-            <input type="file">
+            <input type="file" disabled>
             <br>
             <div id="file_empty" style="display:none">&nbsp</div>
             <div id="validating" style="display:none"><span aria-busy="true" aria-invalid="false">validating...</span></div>
-            <div id="file_valid"><i class="fa fa-check" aria-hidden="true"></i> Passed Validation Checks</div>
+            <div id="file_valid" style="visibility:hidden"><i class="fa fa-check" aria-hidden="true"></i> Passed Validation Checks</div>
             <div id="file_invalid" style="display:none"><i class="fa fa-times-circle" aria-hidden="true"></i> See issues below.</div>
             <br>
             <button style="width:100%" disabled>

@@ -67,9 +67,10 @@ $( document ).ready(function() {
   
   $('#my_acct_save').on('click', function(e) {
     api({
-      busy    : $(this),
-      modal   : $('#my_acct_modal')[0],
-      payload : {
+      busy     : $(this),
+      modal    : $('#my_acct_modal')[0],
+      callback : set_user,
+      payload  : {
         action      : "my_acct", 
         full_name   : $('#full_name').val(),
         affiliation : $('#affiliation').val()

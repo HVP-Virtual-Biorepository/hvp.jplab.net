@@ -154,7 +154,7 @@ api_token_login <- function (auth_token) {
   on.exit(db_close(db))
 
   tryCatch(
-    error = function (e) { list(auth_token = '') }
+    error = function (e) { list(auth_token = '') },
     expr  = {
       user <- authenticate(db, auth_token)
       list(

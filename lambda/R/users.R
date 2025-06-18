@@ -85,7 +85,7 @@ api_add_users <- function (auth_token, emails) {
 
   })
   
-  message <- paste0(collapse = '\n', names(results), ": ", unlist(results))
+  message <- paste0(collapse = '\n', emails, ": ", unlist(results))
 
   return (list(message = message))
 }

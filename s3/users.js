@@ -68,7 +68,10 @@ $( document ).ready(function() {
   $('#my_acct_save').on('click', function(e) {
     api({
       busy     : $(this),
-      callback : set_user,
+      callback : function (resp) { 
+        set_user(resp);
+        closeModal($('#my_acct_modal')[0]);
+      },
       payload  : {
         action      : "my_acct", 
         full_name   : $('#full_name').val(),
@@ -105,6 +108,16 @@ $( document ).ready(function() {
   /* Forgot Password */
   $('#forgot_pw_link').on('click', function(e) {
     openModal($('#forgot_pw_modal')[0]);
+  });
+  
+  $('#forgot_pw_send').on('click', function(e) {
+    api({
+      busy    : $(this),
+      payload : {
+        action : "forgot_pw", 
+        email  : $('#forgot_pw_email').val()
+      }
+    });
   });
   
   

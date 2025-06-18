@@ -9,7 +9,8 @@ db_connect <- function (DATA_DIR) {
         port     = as.numeric(Sys.getenv('MYSQL_PORT')),
         user     = Sys.getenv('MYSQL_USERNAME'),
         password = Sys.getenv('MYSQL_PASSWORD'),
-        dbname   = Sys.getenv('MYSQL_DATABASE') )
+        dbname   = Sys.getenv('MYSQL_DATABASE'),
+        timeout  = 60 )
   })
   
   assert_dbi(db)

@@ -71,6 +71,7 @@ function api (args) {
   // What to do after the xhr completes.
   //-------------------------------------------------------
   if (args['busy'])     { xhr.always(()   => { args['busy'].attr('aria-busy', 'false')    }); }
+  if (args['modal'])    { xhr.always(()   => { closeModal(args['modal']);                 }); }
   if (args['callback']) { xhr.done((resp) => { if (!resp['error']) args['callback'](resp) }); }
   
   return xhr;

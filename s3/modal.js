@@ -79,12 +79,29 @@ const isScrollbarVisible = () => {
 
 
 $( document ).ready(function() {
+  
   $('.close_modal').on('click', function (e) {
-    closeModal($(this).closest('dialog')[0]);
+    const $modal = $(this).closest('dialog');
+    closeModal($modal[0]);
+    $modal.find('input').val('');
+    
+  });
+  
+  $('message_modal').on('close', function (e) {
     $('#message_title_text').text('');
     $('#message_text').text('');
   });
+  
+  $('forgot_pw_modal').on('close', function (e) {
+    $('#forgot_pw_email').val('');
+  });
+  
+  $('add_users_modal').on('close', function (e) {
+    $('#emails').val('');
+  });
+  
 });
+
 
 
 const display_message = (title, msg) => {

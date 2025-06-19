@@ -44,7 +44,7 @@ api_add_users <- function (auth_token, emails) {
   results <- lapply(emails, function (email) {
     
     tryCatch(
-      error = function (e) { e$message },
+      error = function (e) e$message,
       expr  = {
         
         email    <- trimws(assert_string(email, 5, 100))
@@ -154,14 +154,13 @@ api_token_login <- function (auth_token) {
   on.exit(db_close(db))
 
   tryCatch(
-    error = function (e) { list(auth_token = '') },
+    error = function (e) list(auth_token = ''),
     expr  = {
       user <- authenticate(db, auth_token)
       list(
-        auth_token  = auth_token,
         full_name   = user[['full_name']],
-        affiliation = user[['affiliation']],
-        email       = user[['email']] ) })
+        affiliation = user[['affiliation']], 
+        username    = if_empty(user[['full_name']], user[['email']]) ) })
 }
 
 
@@ -218,7 +217,7 @@ api_log_in <- function (email, password) {
     auth_token  = auth_token,
     full_name   = user[['full_name']],
     affiliation = user[['affiliation']], 
-    email       = user[['email']] ))
+    username    = if_empty(user[['full_name']], user[['email']]) ))
 }
 
 
@@ -258,4 +257,11 @@ assert_dbi <- function (db) {
 
 random_string <- function (len) {
   paste(collapse = '', sample(c(LETTERS, letters, 0:9), len, replace = TRUE))
+}
+
+if_empty <- function (val, alt) {
+  if (is.null(val))     return (alt)
+  if (length(val) == 0) return (alt)
+  if (nchar(val) == 0)  return (alt)
+  return (val)
 }

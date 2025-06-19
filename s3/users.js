@@ -1,38 +1,31 @@
 
 $( document ).ready(function() {
   
-  const set_user = function (resp) {
+  const update_user = function (resp) {
     
-    if (resp['auth_token']) {
-      localStorage.setItem('auth_token', resp['auth_token']);
+    if   (resp['auth_token'] === '') localStorage.clear()
+    else $.each(resp, localStorage.setItem);
+    
+    if (localStorage.getItem('auth_token')) {
+      $('#username').text(localStorage.getItem('username'));
       $('body').removeClass('guest');
       $('#email').val('');
       $('#password').val('');
     }
-    else if (resp['auth_token'] === '') {
-      localStorage.removeItem('auth_token');
+    else {
       $('body').addClass('guest');
       $('#username').text('');
-      $('#full_name').val('');
-      $('#affiliation').val('');
       $('#home_link').trigger('click');
-    }
-    
-    if (resp['full_name'] !== undefined) {
-      $('#username').text(resp['full_name'] || resp['email']);
-      $('#full_name').val(resp['full_name']);
-    }
-    
-    if (resp['affiliation'] !== undefined) {
-      $('#affiliation').val(resp['affiliation']);
     }
     
   }
   
+  update_user({});
+  
   
   /* Auto Log In */
   api({
-    callback : set_user,
+    callback : update_user,
     payload  : { action: "token_login" }
   });
 
@@ -42,7 +35,7 @@ $( document ).ready(function() {
 
     api({
       busy     : $(this),
-      callback : set_user,
+      callback : update_user,
       payload  : { 
         action   : "log_in",
         email    : $('#email').val(),
@@ -55,13 +48,15 @@ $( document ).ready(function() {
   /* Log Out */
   $('#log_out_icon').on('click', function(e) {
     api({ payload: { action: "log_out" } });
-    set_user({ auth_token: "" });
+    update_user({ auth_token: "" });
   });
   
   
   
   /* My Account */
   $('#my_acct_icon').on('click', function(e) {
+    $('#full_name').val(localStorage.getItem('full_name'));
+    $('#affiliation').val(localStorage.getItem('affiliation'));
     openModal($('#my_acct_modal')[0]);
   });
   
@@ -69,7 +64,7 @@ $( document ).ready(function() {
     api({
       busy     : $(this),
       modal    : $('#my_acct_modal')[0],
-      callback : set_user,
+      callback : update_user,
       payload  : {
         action      : "my_acct", 
         full_name   : $('#full_name').val(),
@@ -106,6 +101,7 @@ $( document ).ready(function() {
   
   /* Forgot Password */
   $('#forgot_pw_link').on('click', function(e) {
+    $('#forgot_pw_email').val($('#email').val());
     openModal($('#forgot_pw_modal')[0]);
   });
   

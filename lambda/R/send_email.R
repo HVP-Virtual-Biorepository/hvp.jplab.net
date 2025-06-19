@@ -42,12 +42,18 @@ send_email <- function (to, subject, message) {
       
       
       #________________________________________________________
+      # From name and email address.
+      #________________________________________________________
+      from <- c('HVP Virtual Biorepository' = Sys.getenv('SMTP_FROMADDR'))
+      
+      
+      #________________________________________________________
       # Transmit the message.
       #________________________________________________________
       blastula::smtp_send(
           email       = message,
           to          = to,
-          from        = Sys.getenv('SMTP_FROMADDR'), 
+          from        = from, 
           subject     = subject, 
           credentials = creds )
     })

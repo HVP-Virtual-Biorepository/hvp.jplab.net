@@ -92,6 +92,11 @@ $( document ).ready(function() {
     $('#message_text').text('');
   });
   
+  $('my_acct_modal').on('close', function (e) {
+    $('#full_name').val('');
+    $('#affiliation').val('');
+  });
+  
   $('forgot_pw_modal').on('close', function (e) {
     $('#forgot_pw_email').val('');
   });

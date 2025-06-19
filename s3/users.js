@@ -4,7 +4,7 @@ $( document ).ready(function() {
   const update_user = function (resp) {
     
     if   (resp['auth_token'] === '') localStorage.clear()
-    else $.each(resp, localStorage.setItem);
+    else $.each(resp, (k,v) => localStorage.setItem(k,v));
     
     if (localStorage.getItem('auth_token')) {
       $('#username').text(localStorage.getItem('username'));

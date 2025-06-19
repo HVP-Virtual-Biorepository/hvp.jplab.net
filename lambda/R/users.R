@@ -107,7 +107,7 @@ api_my_acct <- function (auth_token, full_name, affiliation) {
   return (list(
     full_name   = full_name,
     affiliation = affiliation,
-    email       = user[['email']] ))
+    username    = if_empty(full_name, user[['email']]) ))
 }
 
 

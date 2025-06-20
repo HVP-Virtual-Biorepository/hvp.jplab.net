@@ -4,14 +4,11 @@ db_connect <- function (DATA_DIR) {
     error = function (e) stop("Unable to connect to MySQL.\n", e$message),
     expr  = {
       DBI::dbConnect(
-        drv      = RMariaDB::MariaDB(), 
-        host     = Sys.getenv('MYSQL_HOST'),
-        port     = as.numeric(Sys.getenv('MYSQL_PORT')),
-        user     = Sys.getenv('MYSQL_USERNAME'),
-        password = Sys.getenv('MYSQL_PASSWORD'),
-        dbname   = Sys.getenv('MYSQL_DATABASE'),
-        timeout  = 60 )
-  })
+        drv    = RMariaDB::MariaDB(), 
+        port   = 3306,
+        user   = 'website',
+        dbname = 'hvp' )
+    })
   
   assert_dbi(db)
   return (db)
@@ -57,17 +54,17 @@ db_query <- function (db, sql, err_code, params = NULL, simplify = TRUE, req1 = 
       verb <- toupper(strsplit(substr(sql, 1, 10), ' ', fixed = TRUE)[[1]][[1]])
       if (!verb %in% c("SELECT", "INSERT", "UPDATE", "DELETE", "BEGIN", "COMMIT"))
         stop("Invalid SQL verb: '", verb, "'.")
-        
+      
       
       #________________________________________________________
       # Run the query/statement
       #________________________________________________________
       result <- do.call(
-          what = if (verb == "SELECT") DBI::dbGetQuery else DBI::dbExecute, 
-          args = list(conn = db, statement = sql, params = params) )
-        
-        
-        
+        what = if (verb == "SELECT") DBI::dbGetQuery else DBI::dbExecute, 
+        args = list(conn = db, statement = sql, params = params) )
+      
+      
+      
       #________________________________________________________
       # For INSERT statements, the result is the new row_id
       #________________________________________________________

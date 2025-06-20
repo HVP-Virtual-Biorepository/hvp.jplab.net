@@ -1,5 +1,3 @@
 
-# Source all files in api/ directory (except ourselves)
-# files <- dir('api', full.names = TRUE)
-# files <- setdiff(files, 'R/runtime.R')
-# lapply(files, source)
+# Source all files in api/R/ directory
+lapply(dir('R', full.names = TRUE), source)

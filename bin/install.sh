@@ -9,6 +9,7 @@ a2enmod md
 a2enmod ssl
 
 git clone https://github.com/HVP-Virtual-Biorepository/hvp.jplab.net.git /var/www/hvp
+chown -R www-data:www-data /var/www/hvp
 ln -s /var/www/hvp/config/httpd.conf /etc/apache2/sites-enabled/hvp.conf
 mysql -u root < /var/www/hvp/config/database.sql
 Rscript --vanilla /var/www/hvp/config/packages.r

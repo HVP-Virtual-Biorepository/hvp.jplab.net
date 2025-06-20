@@ -1,7 +1,5 @@
 
 
-const hvp_lambda = "https://t33blvbzazbgf7vflqyp3tjhxy0hwddm.lambda-url.us-east-1.on.aws/";
-
 //___________________________________________________________________
 // Automatically handle common responses.
 //___________________________________________________________________
@@ -33,7 +31,7 @@ function api (args) {
   // General/default xhr request parameters.
   //-------------------------------------------------------
   const params = {
-    url         : hvp_lambda,
+    url         : 'api',
     type        : "POST",
     crossDomain : true
   };

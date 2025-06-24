@@ -22,7 +22,7 @@ CREATE TABLE auth_tokens (
 );
 
 INSERT INTO users (full_name, affiliation, email, password, added_by)
-  VALUES ('Daniel Smith', 'BCM', 'dpsmith@bcm.edu', '$2a$12$biB44WB7g9PN/9aIt65Ag.adpD1ZQ/LEiaAKmQ6MD8M9Qy6M9uobi', 1);
+  VALUES ('Daniel Smith', 'BCM', 'dpsmith@bcm.edu', '$2a$12$Hfj7shdBenM6oJcSJm7CLeVac44mYfb3uAL9T2c9zTigXB1SBwOKO', 1);
 
 CREATE UNIQUE INDEX users_idx1 ON users (email);
 CREATE UNIQUE INDEX auth_tokens_idx1 ON auth_tokens (auth_token_sha);

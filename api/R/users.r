@@ -69,15 +69,14 @@ api_add_users <- function (auth_token, emails) {
         send_email(
           to      = email, 
           subject = "Welcome to HVP's Virtual Biorepository!",
-          message = blastula::md(
-            text = sprintf(
-              fmt = paste(
-                sep = "\n\n", 
-                "%s has created an account for you at <https://hvp.jplab.net>.",
-                "This website facilitates uploading metadata for the Human Virome Project, and exporting metadata formatted for SRA submissions.",
-                "You can log in with the following credentials:",
-                "Email Address: %s",
-                "Password: %s" ), inviter, email, password)) )
+          message = sprintf(
+            fmt = paste(
+              sep = "<br><br>", 
+              "%s has created an account for you at <https://hvp.jplab.net>.",
+              "This website facilitates uploading metadata for the Human Virome Project, and exporting metadata formatted for SRA submissions.",
+              "You can log in with the following credentials:",
+              "Email Address: %s",
+              "Password: %s" ), inviter, email, password ))
         
         'email sent'
       }
@@ -131,15 +130,13 @@ api_forgot_pw <- function (email) {
   send_email(
     to      = res$email, 
     subject = "Password Reset",
-    message = blastula::md(
-      text = sprintf(
-        fmt = paste(
-          sep = "\n\n", 
-          "You can now log in with this alternate password: %s",
-          "Once you log in using the alternate password, your old password will no longer work.",
-          "<span style='font-size:11px; font-style:italic'>",
-          "If you are not trying to reset your password, this email can be safely ignored.",
-          "</span>"), alt_password )) )
+    message = sprintf(paste(
+      sep = "<br><br>", 
+      "You can now log in with this alternate password: %s",
+      "Once you log in using the alternate password, your old password will no longer work.",
+      "<span style='font-size:11px; font-style:italic'>",
+      "If you are not trying to reset your password, this email can be safely ignored.",
+      "</span>"), alt_password ))
   
   
   message <- 'Check your email for your new password.'

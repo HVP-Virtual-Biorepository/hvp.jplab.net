@@ -2,59 +2,36 @@
 #______________________________________________________________________________
 #' Send an email for email verifications, password resets, etc.
 #' 
+
+footer <- 'sent by the <a href="https://hvp.jplab.net">HVP Virtual Biorepository</a>'
+
 send_email <- function (to, subject, message) {
+  
   tryCatch(
     error = function (e) stop("Unable to send email.\n", e$message),
     expr  = {
       
-      #________________________________________________________
-      # Blastula wants to read credentials from a json file.
-      #________________________________________________________
-      creds <- paste0(
-        '{',
-          '"type":"list",',
-          '"attributes":{',
-            '"names":{',
-              '"type":"character",',
-              '"attributes":{},',
-              '"value":["version","host","port","use_ssl","user","password"]}},',
-          '"value":[',
-            '{"type":"integer","attributes":{},"value":[1]},',
-            '{"type":"character","attributes":{},"value":["', Sys.getenv('SMTP_SERVER'),   '"]},',
-            '{"type":"double","attributes":{},"value":[',     Sys.getenv('SMTP_PORT'),     ']},',
-            '{"type":"logical","attributes":{},"value":[',    Sys.getenv('SMTP_SSL'),      ']},',
-            '{"type":"character","attributes":{},"value":["', Sys.getenv('SMTP_USERNAME'), '"]},',
-            '{"type":"character","attributes":{},"value":["', Sys.getenv('SMTP_PASSWORD'), '"]}]}\n' )
+      odir <- getwd()
+      on.exit(setwd(dir = odir))
       
-      creds_file <- tempfile()
-      on.exit(unlink(creds_file))
-      writeChar(con = creds_file, object = creds, eos = NULL)
-      creds <- blastula::creds_file(file = creds_file)
+      dir.create(tdir <- tempfile())
+      on.exit(unlink(tdir, recursive = TRUE), add = TRUE)
+      setwd(tdir)
       
+      cat(file = 'destination.json', jsonlite::toJSON(list(ToAddresses = to)))
       
-      #________________________________________________________
-      # Ensure message is a proper blastula object.
-      #________________________________________________________
-      if (!is(message, 'blastula_message')) {
-        footer  <- blastula::md("sent by the [HVP Virtual Biorepository](https://hvp.jplab.net)")
-        message <- blastula::compose_email(body = message, footer = footer)
-      }
+      cat(file = 'message.json', jsonlite::toJSON(list(
+        Subject = list(Data = subject, Charset = 'UTF-8'),
+        Body    = list(Html = list(
+            Data = paste0(message, '<br><br>', footer),
+            Charset = 'UTF-8' )))))
       
-      
-      #________________________________________________________
-      # From name and email address.
-      #________________________________________________________
-      from <- c('HVP Virtual Biorepository' = Sys.getenv('SMTP_FROMADDR'))
-      
-      
-      #________________________________________________________
-      # Transmit the message.
-      #________________________________________________________
-      blastula::smtp_send(
-          email       = message,
-          to          = to,
-          from        = from, 
-          subject     = subject, 
-          credentials = creds )
+      system2(
+        command = '/snap/bin/aws', 
+        args    = c(
+          'ses', 'send-email', 
+          '--from',        shQuote("HVP Virtual Biorepository <hvp-no-reply@jplab.net>"),
+          '--destination', 'file://destination.json', 
+          '--message',     'file://message.json' ))
     })
 }

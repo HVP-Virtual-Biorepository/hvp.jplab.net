@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-      - name: ping site
-        run: curl -o /dev/null https://ec2.jplab.net/api?action=git_pull
+      - name: Run `git pull` on EC2 instance
+        run: curl -so /dev/null https://ec2.jplab.net/api?action=git_pull || true

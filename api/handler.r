@@ -4,9 +4,9 @@ resp <- tryCatch(
   expr  = {
 
     # action should be the unprefixed function name
-    args   <- c(GET, POST, FILES)
-    action <- args[['action']]
-    action <- assert_string(action, 3, 20)
+    handler_args <- c(GET, POST, FILES)
+    action       <- handler_args[['action']]
+    action       <- assert_string(action, 3, 20)
     stopifnot(grepl('^[a-z_]+$', action))
 
     # Find the api_* function and its incoming args.

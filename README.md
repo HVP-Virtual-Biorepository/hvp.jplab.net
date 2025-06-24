@@ -69,6 +69,7 @@ apt-get install -y apache2 libapache2-mod-r-base mysql-server libssl-dev libmysq
 R -e "install.packages(c('bcrypt', 'DBI', 'jsonlite', 'openssl', 'readxl', 'RMariaDB'))"
 
 git clone https://github.com/HVP-Virtual-Biorepository/hvp.jplab.net.git /var/www/hvp
+git config --global --add safe.directory /var/www/hvp
 chown -R www-data:www-data /var/www/hvp
 ln -s /var/www/hvp/config/httpd.conf /etc/apache2/sites-enabled/hvp.conf
 mysql -u root < /var/www/hvp/config/database.sql
@@ -77,7 +78,8 @@ echo "www-data ALL=(root) NOPASSWD:/usr/sbin/apache2ctl" > /etc/sudoers.d/hvp
 a2dissite 000-default
 a2enmod md
 a2enmod ssl
-apache2ctl restart
+systemctl daemon-reload
+systemctl restart apache2
 ```
 
 

@@ -30,11 +30,6 @@ function api (args) {
   //-------------------------------------------------------
   // General/default xhr request parameters.
   //-------------------------------------------------------
-  const params = {
-    url         : 'api',
-    type        : "POST",
-    crossDomain : true
-  };
   
   
   //-------------------------------------------------------
@@ -47,22 +42,18 @@ function api (args) {
 
   if (payload.constructor === FormData) {
     
-    params['data']        = payload;
-    params['contentType'] = false;
-    params['processData'] = false;
+    xhr = $.ajax({
+      url         : 'api',
+      type        : 'POST',
+      crossDomain : true,
+      data        : payload,
+      contentType : false,
+      processData : false
+    });
     
   } else {
-    
-    params['data']        = JSON.stringify(payload);
-    params['contentType'] = "application/json";
-    params['dataType']    = "json";
+    xhr = $.post('api', payload);
   }
-  
-  
-  //-------------------------------------------------------
-  // Begin async processing with custom callbacks.
-  //-------------------------------------------------------
-  xhr = $.ajax(params);
   
   
   //-------------------------------------------------------
